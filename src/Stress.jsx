@@ -29,7 +29,7 @@ const questionsList = [
   "How likely are you to seek support when feeling stressed?"
 ];
 
-export default function Stress({ backgroundImage }) {
+export default function Stress({ backgroundVideo }) {
   const [questions, setQuestions] = useState([]);
   const [currentIdx, setCurrentIdx] = useState(0);
   const [answers, setAnswers] = useState([]);
@@ -54,66 +54,71 @@ export default function Stress({ backgroundImage }) {
   // Completed quiz
   if (currentIdx >= questions.length) {
     return (
-      <motion.div
-        className="flex items-center justify-center h-screen text-white relative overflow-hidden"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        style={{
-          backgroundImage: `url(${backgroundImage || '/sleeps.jpeg'})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
-      >
-        <div className="text-center z-10">
-          <motion.h1
-            className="text-4xl font-light mb-4 drop-shadow"
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.8 }}
-          >
-            ✨ Thank You!
-          </motion.h1>
-          <p className="text-lg mb-8 text-white/80">
-            You’ve completed the stress assessment.
-          </p>
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ repeat: Infinity, duration: 5, ease: 'linear' }}
-            className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center shadow-lg backdrop-blur-lg mx-auto"
-          >
-            <SparklesIcon className="h-8 w-8 text-yellow-300" />
-          </motion.div>
-        </div>
-      </motion.div>
+      <div className="relative w-full h-screen overflow-hidden">
+        {/* Background Video */}
+        <video
+          className="absolute inset-0 object-cover w-full h-full"
+          autoPlay
+          loop
+          muted
+          src={backgroundVideo || '/stressbg.mp4'}
+          type="video/mp4"
+        />
+
+        <motion.div
+          className="flex items-center justify-center h-full text-white relative z-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
+          <div className="text-center">
+            <motion.h1
+              className="text-4xl font-light mb-4 drop-shadow"
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.8 }}
+            >
+              ✨ Thank You!
+            </motion.h1>
+            <p className="text-lg mb-8 text-white/80">
+              You’ve completed the stress assessment.
+            </p>
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 5, ease: 'linear' }}
+              className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center shadow-lg backdrop-blur-lg mx-auto"
+            >
+              <SparklesIcon className="h-8 w-8 text-yellow-300" />
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
     );
   }
 
   // Quiz in progress
   return (
-    <motion.div
-      className="flex items-center justify-center h-screen relative overflow-hidden"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-      style={{
-        backgroundImage: `url(${backgroundImage || 'src/assets/sleeps.jpeg'})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
-      }}
-    >
+    <div className="relative w-full h-screen overflow-hidden">
+      {/* Background Video */}
+      <video
+        className="absolute inset-0 object-cover w-full h-full"
+        autoPlay
+        loop
+        muted
+        src={backgroundVideo || '/stressbg.mp4'}
+        type="video/mp4"
+      />
+
       {/* Lottie stars animation */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
         <Player autoplay loop src="/animations/stars.json" className="w-full h-full" />
       </div>
 
-      <div className="relative z-10 max-w-md w-full p-4">
+      <div className="relative z-10 flex items-center justify-center h-full p-4">
         <AnimatePresence mode="popLayout">
           <motion.div
             key={currentIdx}
-            className="bg-black/40 backdrop-blur-md border border-white/20 p-6 rounded-2xl shadow-lg"
+            className="bg-black/40 backdrop-blur-md border border-white/20 p-6 rounded-2xl shadow-lg max-w-md w-full"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -50 }}
@@ -152,6 +157,6 @@ export default function Stress({ backgroundImage }) {
           </motion.div>
         </AnimatePresence>
       </div>
-    </motion.div>
+    </div>
   );
 }
