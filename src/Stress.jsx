@@ -60,7 +60,7 @@ export default function Stress({ backgroundImage }) {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
         style={{
-          backgroundImage: `url(${backgroundImage || 'src/assets/sleeps.jpeg'})`,
+          backgroundImage: `url(${backgroundImage || '/sleeps.jpeg'})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'

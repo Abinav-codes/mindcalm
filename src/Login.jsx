@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -33,7 +34,7 @@ function Login() {
       >
         <div className="flex justify-center mb-6">
           <img
-            src="src\assets\Mindcalm.png"
+            src="/Mindcalm.png"
             alt="MindCalm logo"
             className="h-16 w-16 rounded-full shadow-md"
           />
