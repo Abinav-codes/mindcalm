@@ -19,7 +19,7 @@
     "d3-scale": "^4.0.2",
     "d3-shape": "^3.2.0",
     "d3-time-format": "^4.1.0",
-    "framer-motion": "^12.9.7",
+    "framer-motion": "^12.10.0",
     "jquery": "^3.7.1",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.507.0",
@@ -41,11 +41,36 @@
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.22.0",
+    "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.5",
     "vite": "^6.3.1"
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
+    "plugins": [
+      "react"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 2021,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    },
+    "rules": {
+    
+    }
   }
 }

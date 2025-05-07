@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // src/Stress.jsx
 import { Player } from '@lottiefiles/react-lottie-player';
 import React, { useState, useEffect } from 'react';

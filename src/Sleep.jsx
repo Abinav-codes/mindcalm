@@ -1,5 +1,5 @@
-
-import { AnimatePresence } from 'framer-motion';
+/* eslint-disable no-unused-vars */
+import { AnimatePresence, motion } from 'framer-motion';
 import Lottie from 'react-lottie';
 import animationData from "./assets/bg-animation.json";
 import React, { useState, useMemo } from 'react';
