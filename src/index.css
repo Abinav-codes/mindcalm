@@ -1,0 +1,12 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add this at the very bottom: */
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+}
