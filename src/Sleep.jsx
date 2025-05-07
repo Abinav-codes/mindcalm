@@ -73,145 +73,145 @@ const questions = [
   {
     question: 'Do you dream while sleeping?',
     options: [
-      { label: 'God lvl dreamer', video: videoGod },
-      { label: 'No dreams', video: videoNoDreams },
-      { label: 'Sometimes I do dream', video: videoDreamSome },
+      { label: 'God lvl dreamer', video: videoGod , value: true},
+      { label: 'No dreams', video: videoNoDreams, value: false},
+      { label: 'Sometimes I do dream', video: videoDreamSome, value: true },
     ],
   },
   {
     question: 'Hey man, do you sleep or are you a zombie? (just kidding)',
     options: [
-      { label: "I'm Zombie", video: videoZombie },
-      { label: "I'm Vampire", video: videoVampire },
-      { label: "Nah I'm perfect human", video: videoHuman },
+      { label: "I'm Zombie", video: videoZombie, value: false },
+      { label: "I'm Vampire", video: videoVampire, value: false},
+      { label: "Nah I'm perfect human", video: videoHuman, value: true },
     ],
   },
   {
     question: 'How is your relationship with everyone going?',
     options: [
-      { label: 'Rather not to say', video: videoRatherNot },
-      { label: "Yeah I'm cooked", video: videoCooked },
-      { label: 'People love me', video: videoLoved },
+      { label: 'Rather not to say', video: videoRatherNot, value: false},
+      { label: "Yeah I'm cooked", video: videoCooked, value: false},
+      { label: 'People love me', video: videoLoved, value: true},
     ],
   },
   {
     question: 'Do you love sleep?',
     options: [
-      { label: 'Infinity',      video: videoInfinity },
-      { label: "Yeah it's good", video: videoYeahGood },
-      { label: 'Waste of time',  video: videoWasteOfTime },
+      { label: 'Infinity',      video: videoInfinity, value: true},
+      { label: "Yeah it's good", video: videoYeahGood, value: true},
+      { label: 'Waste of time',  video: videoWasteOfTime, value: false},
     ],
   },
   {
     question: 'Do you get angry when someone disturbs you while sleeping? (I will kill them 😂)',
     options: [
-      { label: "Yeah I'm armed",      video: videoArmed },
-      { label: "Nah it's fine",       video: videoFine   },
-      { label: 'Sometimes I kill',    video: videoSometimesKill },
+      { label: "Yeah I'm armed",      video: videoArmed, value: true},
+      { label: "Nah it's fine",       video: videoFine, value: false},
+      { label: 'Sometimes I kill',    video: videoSometimesKill, value: true},
     ],
   },
   {
     question: 'Do you drink coffee or tea a lot?',
     options: [
-      { label: 'Yeah it helps',           video: videoHelps    },
-      { label: "I can't live without it", video: videoCantLive },
-      { label: 'Not very often',          video: videoNotOften },
+      { label: 'Yeah it helps',           video: videoHelps, value: true},
+      { label: "I can't live without it", video: videoCantLive, value: false},
+      { label: 'Not very often',          video: videoNotOften, value: true},
     ],
   },
   {
     question: 'Have you ever had the nickname "Sleepy head"? (I do got it often lol)',
     options: [
-      { label: 'Yeah I swear',        video: videoSleepyHead  },
-      { label: 'No but got other names', video: videoOtherNames },
-      { label: 'No names',            video: videoNoNames     },
+      { label: 'Yeah I swear',        video: videoSleepyHead, value: true},
+      { label: 'No but got other names', video: videoOtherNames, value: true},
+      { label: 'No names',            video: videoNoNames, value: false},
     ],
   },
   {
     question: 'Do you need to sleep now?',
     options: [
-      { label: 'Yeah leave me bro!',  video: videoLeaveMeBro },
-      { label: "No I'm owl",          video: videoOwl        },
-      { label: 'No idea',             video: videoNoIdea     },
+      { label: 'Yeah leave me bro!',  video: videoLeaveMeBro, value: true },
+      { label: "No I'm owl",          video: videoOwl, value: false},
+      { label: 'No idea',             video: videoNoIdea, value: true},
     ],
   },
   {
     question: 'Are you aware of the benefits of sleeping?',
     options: [
-      { label: "I'm aware",           video: videoAware       },
-      { label: 'Nope should I know', video: videoShouldIKnow },
-      { label: 'Some of them',        video: videoSomeOfThem  },
+      { label: "I'm aware",           video: videoAware, value: true},
+      { label: 'Nope should I know', video: videoShouldIKnow, value: false},
+      { label: 'Some of them',        video: videoSomeOfThem, value: true},
     ],
   },
   {
     question: 'What are your working hours?',
     options: [
-      { label: '9-5 regular stuff',   video: video9to5       },
-      { label: 'Night shift',         video: videoNightShift },
-      { label: 'Depends and flexible', video: videoFlexible   },
+      { label: '9-5 regular stuff',   video: video9to5, value: true},
+      { label: 'Night shift',         video: videoNightShift, value: false},
+      { label: 'Depends and flexible', video: videoFlexible, value: true},
     ],
   },
   {
     question: 'Are you living your life to the fullest?',
     options: [
-      { label: 'Yeah man',              video: videoLivingFullest },
-      { label: 'No I wanna live and love', video: videoLiveAndLove },
-      { label: 'Not every bit',         video: videoNotEveryBit },
+      { label: 'Yeah man',              video: videoLivingFullest, value: true},
+      { label: 'No I wanna live and love', video: videoLiveAndLove, value: true},
+      { label: 'Not every bit',         video: videoNotEveryBit, value: false},
     ],
   },
   {
     question: 'Do you need sleep?',
     options: [
-      { label: "I don't waste my time", video: videoNoWasteTime },
-      { label: 'Yeah pretty much',      video: videoPrettyMuch  },
-      { label: 'I do love it',          video: videoDoLoveIt    },
+      { label: "I don't waste my time", video: videoNoWasteTime, value: false},
+      { label: 'Yeah pretty much',      video: videoPrettyMuch, value: true},
+      { label: 'I do love it',          video: videoDoLoveIt, value: true},
     ],
   },
   {
     question: 'What is your longest sleep ever had? (like 5 days straight)',
     options: [
-      { label: "I haven't done it",     video: videoNeverDoneIt },
-      { label: 'Yup I do',              video: videoYupIDo      },
-      { label: "That's waste of time",  video: videoWasteOfTimey },
+      { label: "I haven't done it",     video: videoNeverDoneIt, value: true},
+      { label: 'Yup I do',              video: videoYupIDo, value: true},
+      { label: "That's waste of time",  video: videoWasteOfTimey, value: false},
     ],
   },
   {
     question: 'What is your average screen time?',
     options: [
-      { label: "That's messed up",      video: videoMessedUp    },
-      { label: "Yeah I'm normal surfer", video: videoNormalSurfer },
-      { label: 'Less screen time',      video: videoLessScreenTime },
+      { label: "That's messed up",      video: videoMessedUp, value: false},
+      { label: "Yeah I'm normal surfer", video: videoNormalSurfer, value: true},
+      { label: 'Less screen time',      video: videoLessScreenTime, value: true},
     ],
   },
   {
     question: 'Any physical activity every day?',
     options: [
-      { label: "I'm fitness freak",     video: videoFitnessFreak },
-      { label: 'Do some activity',      video: videoSomeActivity  },
-      { label: 'Does walking count',    video: videoWalkingCount  },
+      { label: "I'm fitness freak",     video: videoFitnessFreak, value: true},
+      { label: 'Do some activity',      video: videoSomeActivity, value: true},
+      { label: 'Does walking count',    video: videoWalkingCount, value: false},
     ],
   },
   {
     question: 'Do you need a break from daily routine?',
     options: [
-      { label: "Yeah I'm burned out",   video: videoBurnedOut   },
-      { label: "I wanna go on a trip somewhere", video: videoGoOnTrip },
-      { label: "Nah I'm good buddy",    video: videoGoodBuddy   },
+      { label: "Yeah I'm burned out",   video: videoBurnedOut, value: true},
+      { label: "I wanna go on a trip somewhere", video: videoGoOnTrip, value: true},
+      { label: "Nah I'm good buddy",    video: videoGoodBuddy, value: false},
     ],
   },
   {
     question: 'Do you use sleeping pills?',
     options: [
-      { label: 'Yeah I do take it',   video: videoSleepingPillsYes  },
-      { label: 'Not much sometimes',  video: videoSleepingPillsSome },
-      { label: "Nah I'm good",        video: videoSleepingPillsNo   },
+      { label: 'Yeah I do take it',   video: videoSleepingPillsYes, value: false},
+      { label: 'Not much sometimes',  video: videoSleepingPillsSome, value: false},
+      { label: "Nah I'm good",        video: videoSleepingPillsNo, value: true},
     ],
   },
   {
     question: 'Are you a morning person or a night person?',
     options: [
-      { label: 'Morning person',      video: videoMorningPerson },
-      { label: 'Night owl',           video: videoNightOwl      },
-      { label: 'Balanced one',        video: videoBalancedOne   },
+      { label: 'Morning person',      video: videoMorningPerson, value: true},
+      { label: 'Night owl',           video: videoNightOwl, value: false},
+      { label: 'Balanced one',        video: videoBalancedOne, value: true},
     ],
   },
 ];
@@ -279,7 +279,6 @@ export default function SleepQuiz() {
           ) : (
             <motion.div key="thank-you" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="bg-white/60 backdrop-blur-lg rounded-2xl shadow-2xl p-10 text-center max-w-md mx-auto">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Thank You!</h2>
-              <p className="text-lg text-gray-700 mb-2">You answered “true” {trueCount} out of {total} questions.</p>
               <p className="text-2xl font-semibold text-gray-900 mb-2">Your score: {finalScore}</p>
               <p className="text-xl text-indigo-700">{suggestion()}</p>
             </motion.div>
