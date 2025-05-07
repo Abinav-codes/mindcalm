@@ -23,7 +23,19 @@ export default [
     rules: {
       ...js.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+
+      // Allows eslint-disable comments to work for no-unused-vars
+      'no-unused-vars': [
+        'warn',
+        {
+          vars: 'all',
+          args: 'after-used',
+          ignoreRestSiblings: true,
+          varsIgnorePattern: '^_',   // allow _myVar
+          argsIgnorePattern: '^_'    // allow function(_, _args)
+        }
+      ],
+
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
