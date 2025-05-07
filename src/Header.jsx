@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo         from './assets/Mindcalm.png';
+import logo         from '/Mindcalm.png';
 import sleepImg     from './assets/sleep.png';
 import stressImg    from './assets/stress.png';
 import mindImg      from './assets/mindfulness.png';

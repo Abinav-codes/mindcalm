@@ -35,9 +35,9 @@ function RandomQuote() {
 export default function Home() {
   const cards = [
     { to: '/sleep', title: 'Sleep', imgSrc: '/sleep.png', color: 'teal' },
-    { to: '/stress', title: 'Stress', imgSrc: 'src/assets/stress.png', color: 'blue' },
-    { to: '/mindfulness', title: 'Mindfulness', imgSrc: 'src/assets/mindfulness.png', color: 'green' },
-    { to: '/cbt', title: 'CBT', imgSrc: 'src/assets/cbt.png', color: 'purple' },
+    { to: '/stress', title: 'Stress', imgSrc: '/stress.png', color: 'blue' },
+    { to: '/mindfulness', title: 'Mindfulness', imgSrc: '/mindfulness.png', color: 'green' },
+    { to: '/cbt', title: 'CBT', imgSrc: '/cbt.png', color: 'purple' },
   ];
 
   return (
