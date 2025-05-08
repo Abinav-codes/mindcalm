@@ -14,7 +14,7 @@ export function Header() {
     { to: '/sleep',       label: 'Sleep',       icon: sleepImg,     color: 'teal-200' },
     { to: '/stress',      label: 'Stress',      icon: stressImg,    color: 'blue-200' },
     { to: '/mindfulness', label: 'Mindfulness', icon: mindImg,      color: 'green-200' },
-    { to: '/cbt',         label: 'CBT',         icon: cbtImg,       color: 'purple-200' },
+    { to: '/cbt',         label: 'CT',         icon: cbtImg,       color: 'purple-200' },
     { to: '/user',        label: 'Profile',     icon: profileIcon,  color: 'yellow-200' },
     { to: '/settings',    label: 'Settings',    icon: settingsIcon, color: 'gray-200' },
   ];

@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
-// src/Home.jsx
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import { Header } from './Header';
-import StatsDashboard from './StatsDashboard';
+import StatsDashboard from './StatsDashboard.jsx';
+import AnimatedCard from './AnimatedCard.jsx';
 
+// Quotes array
 const quotes = [
   "Peace comes from within. Do not seek it without.",
   "In the silence of the mind, the healing of the soul.",
@@ -22,27 +22,27 @@ function RandomQuote() {
   }, []);
   return (
     <motion.p
-      className="max-w-lg text-md md:text-lg text-white/70 italic mt-4 mb-12 cursor-default"
+      className="max-w-2xl text-teal-100 italic mt-4 mb-12 text-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 1.2, duration: 1 }}
     >
-      "{quote}"
+      “{quote}”
     </motion.p>
   );
 }
 
 export default function Home() {
   const cards = [
-    { to: '/sleep', title: 'Sleep', imgSrc: '/sleep.png', color: 'teal' },
-    { to: '/stress', title: 'Stress', imgSrc: '/stress.png', color: 'blue' },
-    { to: '/mindfulness', title: 'Mindfulness', imgSrc: '/mindfulness.png', color: 'green' },
-    { to: '/cbt', title: 'CBT', imgSrc: '/cbt.png', color: 'purple' },
+    { to: '/sleep',       title: 'Sleep',             imgSrc: "./sleep.png",   description: 'Improve your sleep habits' },
+    { to: '/stress',      title: 'Stress',            imgSrc: "./stress.png",  description: 'Assess and reduce stress' },
+    { to: '/mindfulness', title: 'Mindfulness',       imgSrc: "./mindfulness.png", description: 'Practice daily mindfulness' },
+    { to: '/cbt',         title: 'Cognitive Therapy',  imgSrc: "./cbt.png",     description: 'Learn CBT techniques' },
   ];
 
   return (
     <div
-      className="relative min-h-screen bg-cover bg-center bg-no-repeat bg-fixed flex flex-col cursor-default"
+      className="relative min-h-screen bg-fixed bg-cover bg-center flex flex-col items-center"
       style={{
         backgroundImage:
           "url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1950&q=80')",
@@ -50,55 +50,58 @@ export default function Home() {
     >
       <Header />
 
-      <div className="relative z-10 flex flex-col items-center justify-center flex-grow text-center px-4 pt-20 pb-10">
-        {/* Title */}
-        <motion.h1
-          className="text-5xl md:text-6xl font-light tracking-wide text-white drop-shadow-lg mb-4"
+      <div className="relative z-10 flex flex-col items-center justify-center flex-grow text-center px-4 pt-20 pb-16 space-y-6 w-full">
+        {/* Title and WebM container */}
+        <motion.div
+          className="flex items-center space-x-4"
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          Welcome to MindCalm
-        </motion.h1>
+          <motion.h1
+            className="text-6xl font-light drop-shadow-lg text-teal-200"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 1 }}
+          >
+            Welcome to MindCalm
+          </motion.h1>
+          {/* Interactive WebM with glow on hover/tap */}
+          <motion.video
+            className="w-24 h-24 rounded-lg shadow-lg bg-transparent mix-blend-multiply opacity-70 filter brightness-70 contrast-110 transition-all"
+            src="./smallanii.mp4"
+            autoPlay
+            loop
+            muted
+            initial={{ opacity: 0.7 }}
+            whileHover={{ scale: 1.1, opacity: 1, boxShadow: '0 0 20px rgba(16,185,129,0.8)' }}
+            whileTap={{ scale: 0.95, boxShadow: '0 0 15px rgba(16,185,129,0.6)' }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+          />
+        </motion.div>
 
-        {/* Quote */}
         <RandomQuote />
 
-        {/* Feature Cards */}
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 w-full max-w-6xl"
-          initial="hidden"
-          animate="visible"
-          variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
-        >
-          {cards.map(({ to, title, imgSrc, color }) => (
+        <div className="flex flex-row flex-wrap justify-center items-center w-full px-8">
+          {cards.map(({ to, title, imgSrc, description }) => (
             <motion.div
               key={to}
-              className="group bg-black/30 border border-white/20 rounded-2xl p-6 flex flex-col items-center backdrop-blur-md shadow-lg transition duration-300 cursor-pointer"
-              whileHover={{ y: -6, scale: 1.04, rotate: 1 }}
-              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+              whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(16,185,129,0.7)' }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="flex-1 min-w-[300px] max-w-[400px] opacity-60 hover:opacity-100 transition-opacity duration-300 mix-blend-overlay"
             >
-              <Link to={to} className="flex flex-col items-center">
-                <motion.img
-                  src={imgSrc}
-                  alt={title}
-                  className="h-16 w-16 object-contain"
-                  whileHover={{ scale: 1.2, rotate: -5 }}
-                  transition={{ type: 'spring', stiffness: 200 }}
-                />
-                <motion.h3
-                  className={`mt-4 text-lg font-light text-${color}-200 hover:text-${color}-100 transition-colors`}
-                >
-                  {title}
-                </motion.h3>
-              </Link>
+              <AnimatedCard
+                to={to}
+                imgSrc={imgSrc}
+                title={title}
+                description={description}
+              />
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
 
-      {/* Stats Dashboard Section */}
-      <section className="w-full max-w-7xl mx-auto mt-16 bg-black/20 backdrop-blur-md rounded-2xl p-8 shadow-lg">
+      <section className="w-full max-w-7xl mx-auto mt-16 bg-black/20 backdrop-blur-md rounded-2xl p-8">
         <StatsDashboard />
       </section>
     </div>
