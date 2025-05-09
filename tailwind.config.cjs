@@ -25,5 +25,11 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('daisyui'),
+  ],
+  daisyui: {
+    themes: ['light', 'dark', 'cupcake'], // choose any built-in or custom themes
+    darkTheme: 'dark',                     // default dark theme
+  },
 };

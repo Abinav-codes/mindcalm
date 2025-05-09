@@ -19,6 +19,7 @@
     "d3-scale": "^4.0.2",
     "d3-shape": "^3.2.0",
     "d3-time-format": "^4.1.0",
+    "daisyui": "^5.0.35",
     "framer-motion": "^12.10.0",
     "jquery": "^3.7.1",
     "lottie-react": "^2.4.1",
