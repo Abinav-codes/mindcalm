@@ -1,123 +1,174 @@
 /* eslint-disable no-unused-vars */
 /* File: Mindfulness.jsx */
-import React from 'react';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const bucketCategories = [ 
-   {
+// Define bucket categories with tags matching question options
+const bucketCategories = [
+  {
     title: 'Iconic Travel Destinations',
+    tag: 'Nature & Scenery',
     items: [
       'See the Northern Lights',
-      'Go on an African safari (e.g., Serengeti)',
       'Snorkel the Great Barrier Reef',
-      'Take a classic American road trip (Route 66, Pacific Coast Highway)',
-      'Visit the Maldives',
-      'See the Mona Lisa in Paris',
       'Cruise Norway’s fjords',
       'Explore Machu Picchu in Peru',
     ],
   },
   {
-    title: 'Personal‐Growth & Lifestyle Goals',
+    title: 'Urban & Culture Hotspots',
+    tag: 'Urban & Culture',
     items: [
-      'Improve health or lose weight',
-      'Buy your own home',
-      'Learn a new language',
-      'Write and publish a book',
-      'Run a marathon or complete a triathlon',
-      'Achieve financial independence/retire early',
-    ],
-  },
-  {
-    title: 'Adventure & Extreme Activities',
-    items: [
-      'Skydive or parachute jump',
-      'Bungee-jump off a famous bridge',
-      'Scuba-dive in a shipwreck',
-      'Climb a famous peak (e.g., Kilimanjaro, Everest Base Camp)',
-      'White-water raft on a major river',
-    ],
-  },
-  {
-    title: 'Cultural & Bucket-List Events',
-    items: [
-      'Attend La Tomatina in Spain',
-      'Celebrate Carnival in Rio de Janeiro',
-      'Watch a major sporting event (Olympics, World Cup)',
+      'See the Mona Lisa in Paris',
+      'Visit the Louvre and Eiffel Tower',
       'Experience Holi festival in India',
       'See a Broadway show in New York City',
     ],
   },
   {
-    title: 'Life‐Milestone Experiences',
+    title: 'Adventure & Extreme Activities',
+    tag: 'Adventure & Extreme',
     items: [
-      'Get married in a dream location',
-      'Have children or adopt a child',
-      'Reconnect with an old friend or relative',
-      'Volunteer for a cause abroad',
-      'Learn to cook a regional cuisine (e.g., sushi, pasta)',
+      'Skydive or parachute jump',
+      'Bungee-jump off a famous bridge',
+      'Climb a famous peak (e.g., Kilimanjaro)',
+      'White-water raft on a major river',
     ],
   },
- ];
+];
 
 export default function Mindfulness() {
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState({});
+
+  const questions = [
+    {
+      id: 'travel',
+      text: 'What type of destinations excite you most?',
+      options: ['Nature & Scenery', 'Urban & Culture', 'Adventure & Extreme'],
+    },
+    // Other questions kept but filtering only on 'travel'
+    {
+      id: 'growth',
+      text: 'Which personal growth goal appeals most?',
+      options: ['Health & Fitness', 'Learning & Skill', 'Financial'],
+    },
+    {
+      id: 'experience',
+      text: 'What kind of experiences do you value?',
+      options: ['Events & Festivals', 'Milestones & Life', 'Volunteer & Giving'],
+    },
+  ];
+
+  const handleStart = () => setStep(1);
+  const handleOption = (qId, option) => {
+    setAnswers(prev => ({ ...prev, [qId]: option }));
+    setStep(prev => prev + 1);
+  };
+
+  // Only filter by travel answer
+  const filterCategories = () => {
+    if (!answers.travel) return [];
+    return bucketCategories.filter(cat => cat.tag === answers.travel);
+  };
+
   return (
-    <div className="relative h-screen w-screen overflow-auto">
+    <div className="relative h-screen w-screen overflow-hidden">
+      {/* Fullscreen background video */}
       <video
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover brightness-75"
         src="/mindfulness.mp4"
-        autoPlay loop muted playsInline
+        autoPlay
+        loop
+        muted
+        playsInline
       />
 
-      <div className="relative z-10 bg-green-100 bg-opacity-40 backdrop-blur-lg min-h-screen p-8">
-        <h1 className="text-5xl font-bold text-green-800 mb-8 text-center">
-          Your Dream Bucket List
-        </h1>
+      {/* Overlay content */}
+      <div className="relative z-10 h-full flex flex-col items-center justify-center px-4">
+        <AnimatePresence exitBeforeEnter>
+          {/* Intro */}
+          {step === 0 && (
+            <motion.div
+              key="intro"
+              className="bg-white bg-opacity-40 backdrop-blur-sm rounded-3xl shadow-2xl p-12 cursor-pointer text-center max-w-md mx-auto"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              transition={{ type: 'spring', stiffness: 120 }}
+              onClick={handleStart}
+            >
+              <h1 className="text-5xl font-bold text-green-900">Wanna Check Bucket List?</h1>
+              <p className="mt-4 text-green-800 text-lg">Click to begin</p>
+            </motion.div>
+          )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {bucketCategories.map((cat, idx) => (
-            <TiltCard key={idx} title={cat.title} items={cat.items} delay={idx * 0.1} />
-          ))}
-        </div>
+          {/* Question */}
+          {step > 0 && step <= questions.length && (
+            <motion.div
+              key={`q-${step}`}
+              className="bg-white bg-opacity-40 backdrop-blur-sm rounded-3xl shadow-2xl p-10 max-w-lg w-full mx-auto"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h2 className="text-3xl font-semibold text-green-900 mb-6 text-center">
+                {questions[step - 1].text}
+              </h2>
+              <div className="space-y-4">
+                {questions[step - 1].options.map(opt => (
+                  <motion.button
+                    key={opt}
+                    className="w-full text-center text-xl px-6 py-3 border-2 border-green-900 rounded-full"
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => handleOption(questions[step - 1].id, opt)}
+                  >
+                    {opt}
+                  </motion.button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Results - simple fade and scale on hover */}
+          {step > questions.length && (
+            <motion.div
+              key="results"
+              className="w-full flex flex-col items-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h1 className="text-6xl font-bold text-green-900 mb-8 text-center">
+                Your Dream Bucket List
+              </h1>
+              <div className="w-full flex justify-center overflow-x-auto px-6 space-x-8">
+                {filterCategories().length > 0 ? (
+                  filterCategories().map((cat, idx) => (
+                    <motion.div
+                      key={idx}
+                      className="min-w-[400px] max-w-[500px] bg-white bg-opacity-40 backdrop-blur-sm rounded-3xl shadow-2xl p-8 cursor-pointer flex-shrink-0"
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ type: 'spring', stiffness: 100 }}
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <h2 className="text-3xl font-semibold text-green-800 mb-6 text-center">{cat.title}</h2>
+                      <ul className="list-disc list-inside space-y-3 text-green-700 text-lg">
+                        {cat.items.map((item, i) => <li key={i}>{item}</li>)}
+                      </ul>
+                    </motion.div>
+                  ))
+                ) : (
+                  <p className="text-green-800 text-2xl">No matching categories.</p>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
-  );
-}
-
-// Reusable TiltCard component
-function TiltCard({ title, items, delay }) {
-  // Framer Motion tilt logic
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useTransform(y, [50, -50], [-10, 10]);
-  const rotateY = useTransform(x, [-50, 50], [-10, 10]);
-
-  function handleMouse(e) {
-    const rect = e.currentTarget.getBoundingClientRect();
-    x.set(e.clientX - rect.left - rect.width / 2);
-    y.set(e.clientY - rect.top - rect.height / 2);
-  }
-
-  return (
-    <motion.div
-      className="bg-white bg-opacity-30 backdrop-blur-md rounded-3xl shadow-2xl p-6 cursor-pointer"
-      style={{ rotateX, rotateY, x, y }}
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, type: 'spring', stiffness: 100 }}
-      whileHover={{ scale: 1.03, boxShadow: '0 0 20px rgba(34,197,94,0.5)' }}
-      onMouseMove={handleMouse}
-      onMouseLeave={() => { x.set(0); y.set(0); }}
-    >
-      <h2 className="text-2xl font-semibold text-green-700 mb-4">{title}</h2>
-      <ul className="list-disc list-inside space-y-2 text-green-600">
-        {items.map((item, i) => <li key={i}>{item}</li>)}
-      </ul>
-      <div className="mt-6 text-right">
-        <button className="px-4 py-2 border border-green-700 text-green-700 rounded-full hover:bg-green-700 hover:text-white transition">
-          Add to My List
-        </button>
-      </div>
-    </motion.div>
   );
 }
