@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Header } from './Header';
 import StatsDashboard from './StatsDashboard.jsx';
 import AnimatedCard from './AnimatedCard.jsx';
+import Card from './Card.jsx';
 
 // Quotes array
 const quotes = [
@@ -16,8 +17,8 @@ const quotes = [
 ];
 
 function RandomQuote() {
-  const [quote, setQuote] = useState('');
-  useEffect(() => {
+  const [quote, setQuote] = React.useState('');
+  React.useEffect(() => {
     setQuote(quotes[Math.floor(Math.random() * quotes.length)]);
   }, []);
   return (
@@ -101,8 +102,20 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Stats Dashboard Section */}
       <section className="w-full max-w-7xl mx-auto mt-16 bg-black/20 backdrop-blur-md rounded-2xl p-8">
         <StatsDashboard />
+      </section>
+
+      {/* Footer Card Section */}
+      <section className="w-full max-w-7xl mx-auto mt-12 px-8 flex justify-center">
+        <motion.div
+          whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(16,185,129,0.7)' }}
+          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+          className="opacity-60 hover:opacity-100 transition-opacity duration-300 mix-blend-overlay"
+        >
+          <Card />
+        </motion.div>
       </section>
     </div>
   );
