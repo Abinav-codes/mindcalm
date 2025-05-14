@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Lottie from 'react-lottie';
 import animationData from "./assets/bg-animation.json";
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import videoAlways from "./assets/always.mp4";
 import videoNever from "./assets/never.mp4";
 import videoSometimes from "./assets/sometimes.mp4";
@@ -227,37 +228,50 @@ function shuffleArray(array) {
 }
 
 export default function SleepQuiz() {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [trueCount, setTrueCount]     = useState(0);
+  const [trueCount, setTrueCount] = useState(0);
 
-  // Shuffle once
   const shuffledQuestions = useMemo(() => shuffleArray(questions), []);
-  const total             = shuffledQuestions.length;
-
-  // On answer, track true/false and advance
-  const handleAnswer = (value) => {
-    if (value) setTrueCount(prev => prev + 1);
-    setCurrentIndex(prev => prev + 1);
-  };
-
-  // Lottie config
-  const lottieOptions = { loop: true, autoplay: true, animationData, rendererSettings: { preserveAspectRatio: 'xMidYMid slice' } };
-
-  // Calculate final score (trueCount x 2)
+  const total = shuffledQuestions.length;
+  const progress = Math.round((currentIndex / total) * 100);
   const finalScore = trueCount * 2;
 
-  // Suggestion based on finalScore
-  const suggestion = () => {
-    if (finalScore >= total * 2 * 0.75) return 'Great job! Keep up these healthy sleep habits.';
-    if (finalScore >= total * 2 * 0.4) return 'You’re doing okay—consider small improvements like a regular bedtime.';
-    return 'You might need to adopt better sleep routines: try meditation or a sleep schedule.';
+  const suggestionList = () => {
+    if (finalScore >= total * 2 * 0.75) return [
+      'Maintain your consistent sleep schedule.',
+      'Reduce blue light exposure before bedtime.',
+      'Continue regular physical activity.'
+    ];
+    if (finalScore >= total * 2 * 0.4) return [
+      'Aim for 7-8 hours of sleep each night.',
+      'Try a wind-down routine like reading.',
+      'Limit caffeine in the evening.'
+    ];
+    return [
+      'Establish a fixed sleep-wake time.',
+      'Practice relaxation methods before bed.',
+      'Avoid naps after 3 p.m.',
+      'Consider talking to a sleep specialist.'
+    ];
   };
+
+  const sleepBar = Math.min(100, finalScore * 2);
+  const anxietyBar = 100 - sleepBar;
 
   return (
     <div className="relative h-screen w-screen bg-black overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <Lottie options={lottieOptions} height="100%" width="100%" />
+        <Lottie options={{ loop: true, autoplay: true, animationData, rendererSettings: { preserveAspectRatio: 'xMidYMid slice' } }} height="100%" width="100%" />
       </div>
+
+      <div className="absolute top-4 left-4 right-4 z-10">
+        <div className="w-full h-3 bg-white/20 rounded-full">
+          <div className="h-full bg-green-400 rounded-full" style={{ width: `${progress}%` }}></div>
+        </div>
+        <p className="text-sm text-white mt-1 text-right">{progress}% Complete</p>
+      </div>
+
       <div className="relative z-10 flex items-center justify-center h-full p-4">
         <AnimatePresence mode="wait">
           {currentIndex < total ? (
@@ -265,7 +279,10 @@ export default function SleepQuiz() {
               <h2 className="text-3xl font-bold text-gray-900 mb-6">{shuffledQuestions[currentIndex].question}</h2>
               <div className="space-y-4">
                 {shuffledQuestions[currentIndex].options.map((opt, idx) => (
-                  <motion.button key={idx} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => handleAnswer(opt.value)} className="flex items-center justify-between w-full bg-white/80 backdrop-blur-sm rounded-xl px-5 py-4 text-left shadow-md hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                  <motion.button key={idx} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => {
+                    if (opt.value) setTrueCount(prev => prev + 1);
+                    setCurrentIndex(prev => prev + 1);
+                  }} className="flex items-center justify-between w-full bg-white/80 backdrop-blur-sm rounded-xl px-5 py-4 text-left shadow-md hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-indigo-400">
                     <div className="flex items-center space-x-4">
                       <div className="w-10 h-10 overflow-hidden rounded-full border border-gray-300 shadow-sm">
                         <video src={opt.video} className="w-full h-full object-cover" autoPlay loop muted playsInline />
@@ -280,7 +297,26 @@ export default function SleepQuiz() {
             <motion.div key="thank-you" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="bg-white/60 backdrop-blur-lg rounded-2xl shadow-2xl p-10 text-center max-w-md mx-auto">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Thank You!</h2>
               <p className="text-2xl font-semibold text-gray-900 mb-2">Your score: {finalScore}</p>
-              <p className="text-xl text-indigo-700">{suggestion()}</p>
+
+              <div className="mb-4">
+                <p className="text-sm text-gray-700 mb-1">Sleep Quality</p>
+                <div className="h-3 bg-gray-300 rounded-full overflow-hidden">
+                  <div className="h-full bg-green-500" style={{ width: `${sleepBar}%` }}></div>
+                </div>
+                <p className="text-sm text-gray-700 mt-2 mb-1">Anxiety Level</p>
+                <div className="h-3 bg-gray-300 rounded-full overflow-hidden">
+                  <div className="h-full bg-red-400" style={{ width: `${anxietyBar}%` }}></div>
+                </div>
+              </div>
+
+              <div className="text-left mb-4">
+                <p className="font-semibold text-gray-800 mb-2">Suggestions:</p>
+                <ul className="list-disc list-inside text-gray-700 space-y-1">
+                  {suggestionList().map((tip, i) => <li key={i}>{tip}</li>)}
+                </ul>
+              </div>
+
+              <button onClick={() => navigate('/self-improvement')} className="mt-4 inline-block px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">Go to Self Improvement</button>
             </motion.div>
           )}
         </AnimatePresence>

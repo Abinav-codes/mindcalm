@@ -14,6 +14,7 @@ import AdminPage       from './AdminPage.jsx';        // /admin
 import UserStatsPage   from './UserStatsPage.jsx';    // /admin/status
 import UserReportsPage from './UserReportsPage.jsx';  // /admin/reports
 import ProfilePage     from './ProfilePage.jsx';      // /admin/profile
+import SelfImprovement from './SelfImprovement.jsx';
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
       <Route path="/status" element={<UserStatsPage />} />
           <Route path="/reports" element={<UserReportsPage />} />
            <Route path="/profile" element={<ProfilePage />} />
+           <Route path="/self-improvement" element={<SelfImprovement />} />
           <Route path="*" element={<UserStatsPage />} />
     </Routes>
   );
