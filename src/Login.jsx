@@ -8,14 +8,19 @@ function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (username === 'admin' && password === '1234') {
-      navigate('/home');
-    } else {
-      setError('Invalid username or password');
-    }
-  };
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+  if (username === 'admin' && password === '1234') {
+    localStorage.setItem('therapistUsername', 'Dr. Smith');
+    localStorage.setItem('therapistPassword', '1234');
+    navigate('/admin');
+  } else if (username === 'user' && password === 'user123') {
+    navigate('/home');
+  } else {
+    setError('Invalid username or password');
+  }
+};
 
   return (
     <div

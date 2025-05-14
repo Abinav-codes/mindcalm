@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import styled from 'styled-components';
 
@@ -6,7 +7,7 @@ const Card = () => {
     <StyledWrapper>
       <div className="card">
         <div className="card-photo" />
-        <div className="card-title">JOHN DOE <br />
+        <div className="card-title">Abinav S<br />
           <span>Fullstack dev &amp; UX UI</span>
         </div>
         <div className="card-socials">
