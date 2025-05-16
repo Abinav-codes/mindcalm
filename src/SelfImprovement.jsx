@@ -1,14 +1,16 @@
 /* eslint-disable no-unused-vars */
-/* SelfImprovement.jsx - Final Polished Version with Audio, Books, Tasks */
+// src/pages/SelfImprovement.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircleIcon, XCircleIcon, PauseIcon, PlayIcon, ForwardIcon, BackwardIcon, SpeakerWaveIcon, StarIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon, XCircleIcon, PauseIcon, PlayIcon, ForwardIcon, BackwardIcon, SpeakerWaveIcon, StarIcon, TrophyIcon } from '@heroicons/react/24/outline';
+import BreathingModal from './BreathingModal.jsx';
 import backgroundVideo from './assets/northern-lights.mp4';
 import rain from './assets/rain.ogg';
 import space from './assets/space.ogg';
 import piano from './assets/panio.ogg';
 import confetti from 'canvas-confetti';
-
+import './card-animate.css';
+import SleepTherapistCard from './SleepTherapistCard.jsx';
 const tracks = [
   { title: 'Rain Sounds', src: rain },
   { title: 'Lo-fi Soft Beat', src: space },
@@ -74,6 +76,9 @@ export default function SelfImprovement() {
   const [volume, setVolume] = useState(0.4);
   const [progress, setProgress] = useState(0);
   const [quoteIndex, setQuoteIndex] = useState(0);
+  const [filter, setFilter] = useState('all');
+  const [showBreathing, setShowBreathing] = useState(false);
+  const [earnedBadges, setEarnedBadges] = useState([]);
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -121,8 +126,12 @@ export default function SelfImprovement() {
   const toggleDay = (i, d) => {
     const copy = [...tasks];
     copy[i].week[d] = !copy[i].week[d];
-    if (!tasks[i].week.every(v => v) && copy[i].week.every(v => v)) {
+    const completedNow = copy[i].week.every(v => v);
+    const completedBefore = tasks[i].week.every(v => v);
+    if (!completedBefore && completedNow) {
       confetti({ particleCount: 80, spread: 60, origin: { y: 0.4 } });
+      const badge = `🏆 ${copy[i].text}`;
+      setEarnedBadges(prev => [...prev, badge]);
     }
     setTasks(copy);
   };
@@ -131,88 +140,119 @@ export default function SelfImprovement() {
   const togglePlay = () => setPlaying(p => !p);
   const nextTrack = () => setCurrentTrack((currentTrack + 1) % tracks.length);
   const prevTrack = () => setCurrentTrack((currentTrack - 1 + tracks.length) % tracks.length);
+  const filteredTasks = tasks.filter(task => {
+    if (filter === 'all') return true;
+    const completed = task.week.every(day => day);
+    return filter === 'completed' ? completed : !completed;
+  });
 
   return (
-    <div className="relative min-h-screen bg-black text-white overflow-hidden">
-      <video className="absolute inset-0 w-full h-full object-cover opacity-20 z-0" autoPlay loop muted>
-        <source src={backgroundVideo} type="video/mp4" />
-      </video>
-
-      <audio ref={audioRef} src={tracks[currentTrack].src} loop autoPlay onTimeUpdate={updateProgress} />
-
-      {/* Music Player UI */}
-      <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg px-8 py-4 max-w-md w-full flex flex-col items-center space-y-3">
-        <span className="text-sm font-semibold">Now Playing</span>
-        <p className="font-bold truncate w-full animate-pulse">{tracks[currentTrack].title}</p>
-        <div className="flex gap-4 items-center">
-          <button onClick={prevTrack}><BackwardIcon className="w-5 h-5" /></button>
-          <button onClick={togglePlay}>{playing ? <PauseIcon className="w-6 h-6" /> : <PlayIcon className="w-6 h-6" />}</button>
-          <button onClick={nextTrack}><ForwardIcon className="w-5 h-5" /></button>
-        </div>
-        <input type="range" min={0} max={100} value={progress} onChange={handleSeek} className="w-full accent-indigo-500" />
-        <div className="flex items-center gap-2 w-full">
-          <SpeakerWaveIcon className="w-5 h-5" />
-          <input type="range" min={0} max={1} step={0.01} value={volume} onChange={e => setVolume(+e.target.value)} className="w-full accent-indigo-400" />
-        </div>
+    <div className="relative min-h-screen text-gray-900 dark:text-white bg-white dark:bg-black overflow-hidden transition-colors duration-500">
+      <div className="absolute inset-0 z-0">
+        <video className="w-full h-full object-cover" autoPlay loop muted>
+          <source src={backgroundVideo} type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-white/50 dark:bg-black/50 transition-colors duration-500" />
       </div>
+      <audio ref={audioRef} src={tracks[currentTrack].src} loop autoPlay onTimeUpdate={updateProgress} />
+      <div className="relative z-20 flex flex-col lg:flex-row gap-10 px-6 pt-32 max-w-7xl mx-auto">
+        {/* Music Panel */}
+        <div className="w-full lg:w-1/4 space-y-4 sticky top-6 self-start">
+          <div className="bg-white/10 dark:bg-black/20 backdrop-blur-md border border-white/20 rounded-2xl p-4 space-y-3">
+            <h3 className="text-sm font-semibold text-center">Now Playing</h3>
+            <p className="font-bold text-center truncate animate-pulse">{tracks[currentTrack].title}</p>
+            <div className="flex justify-center items-center gap-4">
+              <button onClick={prevTrack}><BackwardIcon className="w-5 h-5" /></button>
+              <button onClick={togglePlay}>{playing ? <PauseIcon className="w-6 h-6" /> : <PlayIcon className="w-6 h-6" />}</button>
+              <button onClick={nextTrack}><ForwardIcon className="w-5 h-5" /></button>
+            </div>
+            <input type="range" min={0} max={100} value={progress} onChange={handleSeek} className="w-full accent-indigo-500" />
+            <div className="flex items-center gap-2">
+              <SpeakerWaveIcon className="w-5 h-5" />
+              <input type="range" min={0} max={1} step={0.01} value={volume} onChange={e => setVolume(+e.target.value)} className="w-full accent-indigo-400" />
+            </div>
+          </div>
 
-      <div className="relative z-20 max-w-4xl mx-auto px-4 pt-64 pb-24">
-        <motion.p key={quoteIndex} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-xl text-center italic text-indigo-200 mb-6">
-          {quotes[quoteIndex]}
-        </motion.p>
+          {/* Badge Rewards */}
+          {earnedBadges.length > 0 && (
+            <div className="mt-4 bg-yellow-100 dark:bg-yellow-900/40 p-4 rounded-xl">
+              <h4 className="font-bold text-center mb-2">🎖️ Badges Earned</h4>
+              <ul className="space-y-1 text-sm">
+                {earnedBadges.map((badge, idx) => (
+                  <li key={idx} className="flex items-center gap-2">
+                    <TrophyIcon className="w-4 h-4 text-yellow-600 dark:text-yellow-400" /> {badge}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
 
-        {/* Book Recs */}
-        <h2 className="text-3xl font-bold mb-6 text-center text-indigo-300">Top 5 Books for Better Sleep</h2>
-        <div className="grid md:grid-cols-2 gap-6 mb-10">
-          {sleepBooks.map((book, idx) => (
-            <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white/10 backdrop-blur p-4 rounded-2xl shadow-lg">
-              <h3 className="text-xl font-semibold text-white mb-1">{book.title}</h3>
-              <p className="text-indigo-100 text-sm italic mb-2">{book.overview}</p>
-              <p className="text-gray-200 text-sm mb-1"><strong>Summary:</strong> {book.summary}</p>
-              <p className="text-gray-200 text-sm mb-1"><strong>Benefits:</strong> {book.benefits}</p>
-              <a href={book.link} target="_blank" rel="noopener noreferrer" className="inline-block mt-2 text-indigo-400 underline hover:text-indigo-200 text-sm">
-                Purchase Book ↗
-              </a>
+        {/* Main Panel */}
+        <div className="w-full lg:w-3/4">
+          <motion.p key={quoteIndex} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-xl text-center italic text-indigo-200 mb-6">
+            {quotes[quoteIndex]}
+          </motion.p>
+
+          <div className="mb-4">
+            <input
+              type="text"
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              placeholder="Add a calming sleep task..."
+              className="w-full px-4 py-2 rounded-lg text-black dark:text-white dark:bg-white/10"
+            />
+            <button onClick={handleAddTask} className="mt-2 bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg font-medium w-full">Add Task</button>
+          </div>
+
+          {/* Task List */}
+          {filteredTasks.map((task, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white/10 dark:bg-black/20 backdrop-blur p-4 rounded-xl mb-4">
+              <div className="flex justify-between items-center mb-2">
+                <div className="flex items-center gap-2">
+                  <p className="text-lg font-semibold">{task.text}</p>
+                  {task.week.every(v => v) && <StarIcon className="w-5 h-5 text-yellow-400 animate-bounce" />}
+                </div>
+                <button onClick={() => deleteTask(i)} className="text-red-400 hover:text-red-600">Remove</button>
+              </div>
+              <div className="grid grid-cols-7 gap-2">
+                {[...Array(7)].map((_, d) => (
+                  <button
+                    key={d}
+                    onClick={() => toggleDay(i, d)}
+                    className={`rounded-full p-2 flex items-center justify-center transition-all duration-200 transform ${task.week[d] ? 'bg-green-500 scale-110' : 'bg-red-500 scale-100'}`}
+                  >
+                    {task.week[d] ? <CheckCircleIcon className="w-5 h-5" /> : <XCircleIcon className="w-5 h-5" />}
+                  </button>
+                ))}
+              </div>
             </motion.div>
           ))}
-        </div>
 
-        {/* Task Input */}
-        <div className="mb-6 flex gap-2 flex-wrap items-center">
-          <input
-            type="text"
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            placeholder="Add a calming sleep task..."
-            className="flex-1 px-4 py-2 rounded-lg text-black"
-          />
-          <button onClick={handleAddTask} className="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg font-medium">Add</button>
-        </div>
-
-        {/* Task List */}
-        {tasks.map((task, i) => (
-          <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white/10 backdrop-blur p-4 rounded-xl mb-4">
-            <div className="flex justify-between items-center mb-2">
-              <div className="flex items-center gap-2">
-                <p className="text-lg font-semibold">{task.text}</p>
-                {task.week.every(v => v) && <StarIcon className="w-5 h-5 text-yellow-400 animate-bounce" />}
+          <h2 className="text-3xl font-bold mt-16 mb-6 text-center text-indigo-300">Top 5 Books for Better Sleep</h2>
+          <div className="grid md:grid-cols-2 gap-6 mb-10">
+            {sleepBooks.map((book, idx) => (
+              <div key={idx} className="card">
+                <div className="content">
+                  <p className="heading">{book.title}</p>
+                  <p className="para">{book.overview}</p>
+                  <p className="para text-sm">{book.summary}</p>
+                  <p className="para text-sm">Benefits: {book.benefits}</p>
+                  <a href={book.link} target="_blank" rel="noopener noreferrer" className="inline-block mt-2 text-indigo-400 underline hover:text-indigo-200 text-sm">Purchase Book ↗</a>
+                </div>
               </div>
-              <button onClick={() => deleteTask(i)} className="text-red-400 hover:text-red-600">Remove</button>
-            </div>
-            <div className="grid grid-cols-7 gap-2">
-              {[...Array(7)].map((_, d) => (
-                <button
-                  key={d}
-                  onClick={() => toggleDay(i, d)}
-                  className={`rounded-full p-2 flex items-center justify-center ${task.week[d] ? 'bg-green-500' : 'bg-red-500'}`}
-                >
-                  {task.week[d] ? <CheckCircleIcon className="w-5 h-5" /> : <XCircleIcon className="w-5 h-5" />}
-                </button>
-              ))}
-            </div>
-          </motion.div>
-        ))}
+            ))}
+          </div>
+
+          <div className="text-center mb-16">
+            <button onClick={() => setShowBreathing(true)} className="inline-block px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white text-sm rounded-full shadow-md transition">
+              🧘 Cool down with 60s Breathing
+            </button>
+          </div>
+          <SleepTherapistCard />
+        </div>
       </div>
+      <BreathingModal open={showBreathing} onClose={() => setShowBreathing(false)} />
     </div>
   );
 }

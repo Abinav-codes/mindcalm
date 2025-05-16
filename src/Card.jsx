@@ -8,7 +8,7 @@ const Card = () => {
       <div className="card">
         <div className="card-photo" />
         <div className="card-title">Abinav S<br />
-          <span>Fullstack dev &amp; UX UI</span>
+          <span>UI Designer</span>
         </div>
         <div className="card-socials">
           <button className="card-socials-btn facebook">
